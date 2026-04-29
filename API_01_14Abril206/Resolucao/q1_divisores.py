@@ -1,5 +1,9 @@
+from utils import obter_inteiro_positivo
+
+
 def main():
-  n = int(input('N:'))
+  # n = int(input('N:'))
+  n = obter_inteiro_positivo('N: ')
   contador = 0
 
   print('Divisores: ', end='')

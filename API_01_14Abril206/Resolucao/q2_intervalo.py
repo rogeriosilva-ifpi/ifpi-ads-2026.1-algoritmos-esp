@@ -1,6 +1,9 @@
+from utils import obter_inteiro_minimo, obter_inteiro_positivo
+
+
 def main():
-  n = int(input('N:'))
-  m = int(input('N:'))
+  n = obter_inteiro_positivo('N: ')
+  m = obter_inteiro_minimo('M: ', n+1)
   soma = 0
 
   print('Divisores: ', end='')

@@ -1,10 +1,10 @@
-from unittest import result
+from utils import obter_real_positivo
 
 
 def main():
-  distancia = float(input('Distância(km): '))
-  perc_estrada = float(input('Percentual em Estrada (%): '))
-  valor_litro = float(input('Valor Litro(R$): '))
+  distancia = obter_real_positivo('Distância(km): ')
+  perc_estrada = obter_real_positivo('Percentual em Estrada (%): ')
+  valor_litro = obter_real_positivo('Valor Litro(R$): ')
 
   dist_estrada = (distancia / 100) * perc_estrada
   dist_cidade = distancia - dist_estrada

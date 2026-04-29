@@ -1,5 +1,7 @@
+from utils import obter_inteiro_positivo, obter_real_faixa
+
 def main():
-  n = int(input('Quantos alunos? '))
+  n =  obter_inteiro_positivo('Quantos alunos? ')
   maior = -1
   menor = -1
   somatorio_geral = 0
@@ -9,7 +11,7 @@ def main():
 
 
   for i in range(n):
-    nota = float(input(f'Nota do aluno {i+1}: '))
+    nota = obter_real_faixa(f'Nota do aluno {i+1}: ', 0, 10)
     somatorio_geral += nota
     situacao = calcular_situacao(nota)
     if nota > maior:
