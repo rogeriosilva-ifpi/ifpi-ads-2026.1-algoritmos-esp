@@ -10,15 +10,14 @@ def main():
     2 - Listar número
     3 - Atualizar número
     4 - Remover número
-    5 - Listar somente ímpares
-    6 - Listar somente pares
-    7 - Multiplicar números por N
-    8 - Listar o Triplo dos números ímpares
-    9 - Listar somente positivos
-    10 - Listar somente negativos
-    11 - Listar a metade dos negativos
-    12 - Somatorio dos Número (reduce)
-    13 - Média dos Valores (reduce)
+    5 - Listar somente ímpares (Filter)
+    6 - Listar somente pares (Filter)
+    7 - Multiplicar números por N (Map)
+    8 - Listar o Triplo dos números ímpares (Map/Filter)
+    9 - Listar somente positivos (Filter)
+    10 - Listar somente negativos (Filter)
+    11 - Listar a metade dos negativos (Filter/Map)
+    12 - Mostrar o Resto da divisão por 2 (Map)
     --------------------
     0 - Sair >> '''
 
@@ -52,41 +51,39 @@ def main():
             numeros = remover_item(numeros, numero)
             sucesso()
         elif opcao == 5:
-            numeros_impares = filtrar_impares(numeros)
+            numeros_impares = filtrar(numeros, eh_impar)
             listar_numeros(numeros_impares)
             sucesso()
         elif opcao == 6:
-            numeros_pares = filtrar_pares(numeros)
+            numeros_pares = filtrar(numeros, lambda x:x%2==0)
+            numeros_pares = filtrar(numeros, eh_par)
             listar_numeros(numeros_pares)
             sucesso()
         elif opcao == 7:
             n = int(input('Multiplicar por: '))
-            numeros_mapeados = mapear_multiplicar(numeros, n)
+            numeros_mapeados = mapear(numeros, lambda x:x*n)
             listar_numeros(numeros_mapeados)
             sucesso()
         elif opcao == 8:
-            lista = mapear_multiplicar(filtrar_impares(numeros), 3)
+            lista = mapear(filtrar(numeros, eh_impar), lambda x:x*3)
             listar_numeros(lista)
             sucesso()
         elif opcao == 9:
-            positivos = filtrar_positivos(numeros)
+            positivos = filtrar(numeros, eh_positivo)
             listar_numeros(positivos)
             sucesso()
         elif opcao == 10:
-            negativos = filtrar_negativos(numeros)
+            # negativos = filtrar(numeros, lambda n:n<0)
+            negativos = filtrar(numeros, eh_negativo)
             listar_numeros(negativos)
             sucesso()
         elif opcao == 11:
-            lista = mapear_multiplicar(filtrar_negativos(numeros), 0.5)
+            lista = mapear(filtrar(numeros, lambda x:x<0), lambda r:r*0.5)
             listar_numeros(lista)
             sucesso()
         elif opcao == 12:
-            somatorio = somar_todos_os_numeros(numeros)
-            print(f'A soma dos números é {somatorio}')
-            sucesso()
-        elif opcao == 13:
-            media = media_dos_valores(numeros)
-            print(f'A média dos valores {media}')
+            lista = mapear(numeros, lambda x:x%2)
+            listar_numeros(lista)
             sucesso()
 
         input('Enter para continuar...')
@@ -157,42 +154,40 @@ def remover_item(colecao, elemento):
     return nova_colecao
 
 
+# Funcao Critério
+def eh_impar(numero): # lambda numero:numero%2 != 0
+    return numero % 2 != 0
+
+
+def eh_par(numero):
+    return not eh_impar(numero)
+
+
+def eh_positivo(numero):
+    return numero > 0
+
+
+def eh_negativo(numero):
+    return numero < 0
+
 # Filter
-def filtrar_impares(numeros):
+def filtrar(colecao, criterio):
     lista = []
-    for numero in numeros:
-        if numero % 2 != 0:
-            lista.append(numero)
+    for item in colecao:
+        if criterio(item):
+            lista.append(item)
 
     return lista
 
-
-def filtrar_pares(numeros):
-    lista = []
-    for numero in numeros:
-        if numero % 2 == 0:
-            lista.append(numero)
-
-    return lista
-
-def filtrar_positivos(numeros):
-    lista = []
-    for numero in numeros:
-        if numero > 0:
-            lista.append(numero)
-
-    return lista
-
-
-def filtrar_negativos(numeros):
-    lista = []
-    for numero in numeros:
-        if numero < 0:
-            lista.append(numero)
-
-    return lista
 
 # Map
+def mapear(colecao, transformacao):
+    lista = []
+    for item in colecao:
+        lista.append(transformacao(item))
+    
+    return lista
+
 def mapear_multiplicar(numeros, n):
     lista = []
     for numero in numeros:
@@ -200,17 +195,13 @@ def mapear_multiplicar(numeros, n):
     
     return lista
 
-# Reduce
-def somar_todos_os_numeros(numeros):
-    somatorio = 0
+
+def mapear_resto_por_2(numeros):
+    lista = []
     for numero in numeros:
-        somatorio = somatorio + numero
-
-    return somatorio
-
-
-def media_dos_valores(numeros):
-    return somar_todos_os_numeros(numeros) / len(numeros)
+        lista.append(numero % 2)
+    
+    return lista
     
 
 
